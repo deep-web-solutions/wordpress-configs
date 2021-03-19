@@ -176,7 +176,7 @@ class IsolateWordPressReferences {
 		};
 		$traverser->addVisitor( $project_files_visitor );
 
-		$project_files = Finder::create()->files()->in( dirname( $vendorDir ) )->exclude( array( 'tests', 'vendor' ) )->name( '*.php' );
+		$project_files = Finder::create()->files()->in( dirname( $vendorDir ) )->exclude( array( 'tests', 'vendor', 'node_modules' ) )->name( '*.php' );
 		foreach ( $project_files as $file ) {
 			$traverser->traverse( $parser->parse( $file->getContents() ) );
 		}
