@@ -1,0 +1,43 @@
+{
+  "name": "deep-web-solutions/wordpress-configs",
+  "type": "library",
+
+  "description": "A collection of shared configuration files across multiple WordPress projects.",
+  "keywords": ["wordpress", "Deep Web Solutions", "config"],
+  "homepage": "https://www.deep-web-solutions.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Antonius Hegyes",
+      "email": "a.hegyes@deep-web-solutions.com",
+      "homepage": "https://www.linkedin.com/in/tonyhegyes",
+      "role": "Developer"
+    },
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/deep-web-solutions/wordpress-configs/graphs/contributors"
+    }
+  ],
+
+  "require": {
+    "php": ">=7.4",
+    "nikic/php-parser": "^4.10",
+    "symfony/finder": "^5.2"
+  },
+  "require-dev": {
+    "composer/composer": "^2.0",
+    "php-stubs/wordpress-stubs": ">=v5.5.0"
+  },
+
+  "autoload": {
+    "classmap": [
+      "src"
+    ]
+  },
+
+  "scripts": {
+    "test:wp-isolate-references": [
+      "DeepWebSolutions\\Config\\Composer\\IsolateWordPressReferences::postAutoloadDump"
+    ]
+  }
+}
