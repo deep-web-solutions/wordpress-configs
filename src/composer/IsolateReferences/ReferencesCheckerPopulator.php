@@ -73,7 +73,7 @@ class ReferencesCheckerPopulator extends ReferencesPopulator {
 	 * @return  int|null
 	 */
 	public function enterNode( Node $node ): ?int {
-		if ( $node instanceof Node\Stmt\Function_ ) {
+		if ( $node instanceof Node\Stmt\Function_ || $node instanceof Node\Stmt\ClassMethod ) {
 			// Check return type(s).
 			$return_types = $this->type_to_string_array( $node->returnType );
 			if ( ! empty( $return_types ) ) {
@@ -114,6 +114,13 @@ class ReferencesCheckerPopulator extends ReferencesPopulator {
 				}
 			}
 		} elseif ( $node instanceof Node\Expr\New_ && 'Name' === $node->class->getType() ) {
+			$class_name = $node->class->parts[0];
+			foreach ( $this->classes as $class ) {
+				if ( strtolower( $class_name ) === strtolower( $class ) ) {
+					$this->project_classes[] = $class_name;
+				}
+			}
+		} elseif ( $node instanceof Node\Expr\Instanceof_ || $node instanceof Node\Expr\StaticCall ) {
 			$class_name = $node->class->parts[0];
 			foreach ( $this->classes as $class ) {
 				if ( strtolower( $class_name ) === strtolower( $class ) ) {
