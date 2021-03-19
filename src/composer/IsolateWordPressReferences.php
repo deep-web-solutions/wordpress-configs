@@ -31,6 +31,10 @@ class IsolateWordPressReferences {
 			$console_IO->write( 'Not isolating WordPress functions, due to not being in dev mode.' );
 			return;
 		}
+		if ( getenv( 'CI' ) ) {
+			$console_IO->write( 'Not isolating WordPress functions, due to environment config.' );
+			return;
+		}
 
 		$wp_stubs_path = $vendorDir . '/php-stubs/wordpress-stubs/wordpress-stubs.php';
 		if ( ! is_file( $wp_stubs_path ) ) {
