@@ -28,6 +28,6 @@ return array(
 	'patchers'        => array(),
 
 	'files-whitelist' => array(
-		__DIR__ . '/../../vendor/php-di/php-di/src/Compiler/Template.php',
+		$GLOBALS['dws_vendorDir'] . '/php-di/php-di/src/Compiler/Template.php',
 	),
 );

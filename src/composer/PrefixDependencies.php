@@ -34,6 +34,9 @@ class PrefixDependencies {
 			return;
 		}
 
+		$console_IO->write( 'Setting vendor dir as global...' );
+		$GLOBALS['dws_vendorDir'] = $vendorDir;
+
 		$console_IO->write( 'Making sure autoloaded files exist...' );
 
 		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), JSON_OBJECT_AS_ARRAY );
