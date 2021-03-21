@@ -35,7 +35,7 @@ return array(
 
 				$reference_files = Finder::create()->files()->in( 'vendor/deep-web-solutions/' )->name( array( 'wp-references.json', 'other-references.json' ) );
 				foreach ( $reference_files as $file ) {
-					$references          = json_decode( $file->getContents() );
+					$references          = json_decode( $file->getContents(), JSON_OBJECT_AS_ARRAY );
 					$reference_classes   = array_merge( $reference_classes, $references['classes'] );
 					$reference_functions = array_merge( $reference_functions, $references['functions'] );
 				}
