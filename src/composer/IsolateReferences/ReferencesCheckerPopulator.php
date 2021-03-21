@@ -121,10 +121,12 @@ class ReferencesCheckerPopulator extends ReferencesPopulator {
 				}
 			}
 		} elseif ( $node instanceof Node\Expr\Instanceof_ || $node instanceof Node\Expr\StaticCall ) {
-			$class_name = $node->class->parts[0];
-			foreach ( $this->classes as $class ) {
-				if ( strtolower( $class_name ) === strtolower( $class ) ) {
-					$this->project_classes[] = $class_name;
+			if ( $node->class instanceof Node\Name ) {
+				$class_name = $node->class->parts[0];
+				foreach ( $this->classes as $class ) {
+					if ( strtolower( $class_name ) === strtolower( $class ) ) {
+						$this->project_classes[] = $class_name;
+					}
 				}
 			}
 		}
