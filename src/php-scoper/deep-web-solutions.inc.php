@@ -5,6 +5,19 @@ use Isolated\Symfony\Component\Finder\Finder;
 $dws_framework_components      = array( 'wp-framework-bootstrapper', 'wp-framework-helpers', 'wp-framework-foundations', 'wp-framework-utilities', 'wp-framework-core', 'wp-framework-settings', 'wp-framework-woocommerce' );
 $dws_framework_component_files = array( '*.php', 'LICENSE', 'composer.json', '*.pot', '*.po', '*.mo', '*.svg' );
 
+$dws_reference_classes   = array();
+$dws_reference_functions = array();
+
+$dws_reference_files = Finder::create()->files()->in( getenv('dws_vendorDir') . '/deep-web-solutions/' )->name( array( 'wp-references.json', 'other-references.json' ) );
+foreach ( $dws_reference_files as $file ) {
+	$references              = json_decode( $file->getContents(), true );
+	$dws_reference_classes   = array_merge( $dws_reference_classes, $references['classes'] );
+	$dws_reference_functions = array_merge( $dws_reference_functions, $references['functions'] );
+}
+
+$dws_reference_classes   = array_unique( $dws_reference_classes );
+$dws_reference_functions = array_unique( $dws_reference_functions );
+
 return array(
 	/**
 	 * By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
@@ -26,28 +39,11 @@ return array(
 	 * For more see: https://github.com/humbug/php-scoper#patchers
 	 */
 	'patchers'                   => array(
-		function ( string $file_path, string $prefix, string $content ) {
-			static $reference_classes = null, $reference_functions = null;
-
-			if ( \is_null( $reference_classes ) || \is_null( $reference_functions ) ) {
-				$reference_classes   = array();
-				$reference_functions = array();
-
-				$reference_files = Finder::create()->files()->in( 'vendor/deep-web-solutions/' )->name( array( 'wp-references.json', 'other-references.json' ) );
-				foreach ( $reference_files as $file ) {
-					$references          = json_decode( $file->getContents(), JSON_OBJECT_AS_ARRAY );
-					$reference_classes   = array_merge( $reference_classes, $references['classes'] );
-					$reference_functions = array_merge( $reference_functions, $references['functions'] );
-				}
-
-				$reference_classes   = array_unique( $reference_classes );
-				$reference_functions = array_unique( $reference_functions );
-			}
-
-			foreach ( $reference_functions as $function ) {
+		function ( string $file_path, string $prefix, string $content ) use ( $dws_reference_functions, $dws_reference_classes ) {
+			foreach ( $dws_reference_functions as $function ) {
 				$content = str_replace( '\\' . $prefix . '\\' . $function . '(', '\\' . $function . '(', $content );
 			}
-			foreach ( $reference_classes as $class ) {
+			foreach ( $dws_reference_classes as $class ) {
 				$content = str_replace( 'use ' . $prefix . '\\' . $class . ';', '', $content );
 				$content = str_replace( '\\' . $prefix . '\\' . $class, '\\' . $class, $content );
 			}

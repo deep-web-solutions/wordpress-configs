@@ -39,7 +39,7 @@ class PrefixDependencies {
 
 		$console_IO->write( 'Making sure autoloaded files exist...' );
 
-		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), JSON_OBJECT_AS_ARRAY );
+		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true );
 		$autoload_files   = array_merge( $composer_package['autoload']['files'] ?? array(), $composer_package['autoload-dev']['files'] ?? array() );
 		foreach ( $autoload_files as $file ) {
 			$file = dirname( $vendorDir ) . DIRECTORY_SEPARATOR . $file;
