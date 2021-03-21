@@ -21,13 +21,15 @@
 
   "require": {
     "php": ">=7.4",
-    "nikic/php-parser": "^4.10",
-    "symfony/finder": "^5.2"
+    "ext-json": "*",
+    "humbug/php-scoper": ">=0.14.0"
   },
   "require-dev": {
     "composer/composer": "^2.0",
     "php-stubs/wordpress-stubs": ">=v5.5.0"
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
 
   "autoload": {
     "classmap": [
@@ -36,8 +38,18 @@
   },
 
   "scripts": {
+    "composer:install": [
+      "@composer install --ignore-platform-reqs"
+    ],
+    "composer:update": [
+      "@composer update --ignore-platform-reqs"
+    ],
+
     "test:wp-isolate-references": [
       "DeepWebSolutions\\Config\\Composer\\IsolateWordPressReferences::postAutoloadDump"
+    ],
+    "test:prefix-dependencies": [
+      "DeepWebSolutions\\Config\\Composer\\PrefixDependencies::postAutoloadDump"
     ]
   }
 }
