@@ -39,7 +39,7 @@ class PrefixDependencies {
 		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), JSON_OBJECT_AS_ARRAY );
 		$autoload_files   = array_merge( $composer_package['autoload']['files'] ?? array(), $composer_package['autoload-dev']['files'] ?? array() );
 		foreach ( $autoload_files as $file ) {
-			$file = $vendorDir . DIRECTORY_SEPARATOR . $file;
+			$file = dirname( $vendorDir ) . DIRECTORY_SEPARATOR . $file;
 			if ( ! is_file( $file ) ) {
 				mkdir( dirname( $file ), 0755, true );
 				touch( $file );
