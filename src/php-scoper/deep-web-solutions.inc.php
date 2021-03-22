@@ -2,8 +2,13 @@
 
 use Isolated\Symfony\Component\Finder\Finder;
 
-$dws_framework_components      = array( 'wp-framework-bootstrapper', 'wp-framework-helpers', 'wp-framework-foundations', 'wp-framework-utilities', 'wp-framework-core', 'wp-framework-settings', 'wp-framework-woocommerce' );
 $dws_framework_component_files = array( '*.php', 'LICENSE', 'composer.json', '*.pot', '*.po', '*.mo', '*.svg' );
+$dws_framework_components      = array( 'wp-framework-bootstrapper', 'wp-framework-helpers', 'wp-framework-foundations', 'wp-framework-utilities', 'wp-framework-core', 'wp-framework-settings', 'wp-framework-woocommerce' );
+foreach ( $dws_framework_components as $key => $component ) {
+	if ( ! is_dir( getenv('dws_vendorDir') . "/deep-web-solutions/{$component}" ) ) {
+		unset( $dws_framework_components[ $key ] );
+	}
+}
 
 $dws_reference_classes   = array();
 $dws_reference_functions = array();
