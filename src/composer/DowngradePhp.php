@@ -5,56 +5,46 @@ namespace DeepWebSolutions\Config\Composer;
 use Composer\Script\Event;
 
 /**
- * Static composer actions for prefixing dependencies after every update.
+ * Static composer actions for downgrading dependencies' files after every update.
  *
  * @since   1.0.0
  * @version 1.0.0
  * @author  Antonius Hegyes <a.hegyes@deep-web-solutions.com>
  * @package DeepWebSolutions\WP-Config\Composer
  */
-class PrefixDependencies {
+class DowngradePhp {
 	/**
 	 * Action for the 'post-autoload-dump' event.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param   Event   $event
+	 * @param Event $event
 	 */
 	public static function postAutoloadDump( Event $event ): void {
 		$console_IO = $event->getIO();
 		$vendorDir  = $event->getComposer()->getConfig()->get( 'vendor-dir' );
 
 		if ( ! $event->isDevMode() ) {
-			$console_IO->write( 'Not prefixing dependencies, due to not being in dev move.' );
+			$console_IO->write( 'Not downgrading PHP, due to not being in dev move.' );
 			return;
 		}
-		if ( ! is_file( $vendorDir . '/bin/php-scoper' ) ) {
-			$console_IO->write( 'Not prefixing dependencies, due to PHP-Scoper not being installed' );
+		if ( ! is_file( $vendorDir . '/bin/rector' ) ) {
+			$console_IO->write( 'Not downgrading PHP, due to Rector not being installed' );
 			return;
 		}
 
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
 		putenv( "dws_vendorDir={$vendorDir}" );
 
-		$console_IO->write( 'Making sure autoloaded files exist...' );
+		$console_IO->write( 'Collecting autoloaded files...' );
 
 		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true );
 		$autoload_files   = array_merge( $composer_package['autoload']['files'] ?? array(), $composer_package['autoload-dev']['files'] ?? array() );
-		foreach ( $autoload_files as $file ) {
-			$file = dirname( $vendorDir ) . DIRECTORY_SEPARATOR . $file;
-			if ( ! is_file( $file ) ) {
-				mkdir( dirname( $file ), 0755, true );
-				touch( $file );
-			}
-		}
 
-		$console_IO->write( 'Setting package name as an environment variable...' );
-		putenv( "dws_packageName={$composer_package['name']}" );
-
-		$console_IO->write( 'Prefixing dependencies...' );
+		$console_IO->write( 'Downgrading PHP...' );
 
 		$event_dispatcher = $event->getComposer()->getEventDispatcher();
-		$event_dispatcher->dispatchScript( 'prefix-dependencies', $event->isDevMode() );
+		$event_dispatcher->dispatchScript( 'downgrade-php', $event->isDevMode() );
 	}
 }
