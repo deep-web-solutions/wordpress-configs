@@ -3,7 +3,7 @@
 use Isolated\Symfony\Component\Finder\Finder;
 
 $dws_plugin_language_domain     = str_replace( 'wp', 'dws', explode( '/', getenv( 'dws_packageName' ) )[1] );
-$dws_framework_language_domains = array( 'dws-wp-framework-bootstrapper', 'dws-wp-framework-helpers', 'dws-wp-framework-foundations', 'dws-wp-framework-core', 'dws-wp-framework-settings', 'dws-wp-framework-woocommerce' );
+$dws_framework_language_domains = array( 'dws-wp-framework-bootstrapper', 'dws-wp-framework-helpers', 'dws-wp-framework-foundations', 'dws-wp-framework-utilities', 'dws-wp-framework-core', 'dws-wp-framework-settings', 'dws-wp-framework-woocommerce' );
 $dws_framework_component_files  = array( '*.php', 'LICENSE', 'composer.json', '.js', '.css', '*.svg' );
 $dws_framework_components       = array( 'wp-framework-bootstrapper', 'wp-framework-helpers', 'wp-framework-foundations', 'wp-framework-utilities', 'wp-framework-core', 'wp-framework-settings', 'wp-framework-woocommerce' );
 foreach ( $dws_framework_components as $key => $component ) {
