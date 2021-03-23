@@ -66,7 +66,7 @@ return array(
 			if ( false !== strpos( $file_path, 'bootstrap.php' ) ) {
 				$content = str_replace(
 					"\\load_plugin_textdomain('{$dws_plugin_language_domain}', \\false, \\dirname(\\plugin_basename(__FILE__)) . '/src/languages');",
-					'\\ Line removed during PHP-scoping.',
+					'\\\\ Line removed during PHP-scoping.',
 					$content
 				);
 			}
