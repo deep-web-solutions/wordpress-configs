@@ -2,7 +2,7 @@
 
 use Isolated\Symfony\Component\Finder\Finder;
 
-$dws_plugin_language_domain     = explode( '/', getenv( 'dws_packageName' ) )[1];
+$dws_plugin_language_domain     = str_replace( 'wp', 'dws', explode( '/', getenv( 'dws_packageName' ) )[1] );
 $dws_framework_language_domains = array( 'dws-wp-framework-bootstrapper', 'dws-wp-framework-helpers', 'dws-wp-framework-foundations', 'dws-wp-framework-core', 'dws-wp-framework-settings', 'dws-wp-framework-woocommerce' );
 $dws_framework_component_files  = array( '*.php', 'LICENSE', 'composer.json', '.js', '.css', '*.svg' );
 $dws_framework_components       = array( 'wp-framework-bootstrapper', 'wp-framework-helpers', 'wp-framework-foundations', 'wp-framework-utilities', 'wp-framework-core', 'wp-framework-settings', 'wp-framework-woocommerce' );
@@ -35,7 +35,7 @@ return array(
 	 * For more see: https://github.com/humbug/php-scoper#finders-and-paths
 	 */
 	'finders'                    => array_map( function ( string $component ) use ( $dws_framework_component_files ) {
-		return Finder::create()->files()->in( "vendor/deep-web-solutions/{$component}" )->exclude( 'tests' )->name( $dws_framework_component_files );
+		return Finder::create()->files()->in( "vendor/deep-web-solutions/{$component}" )->exclude( array( 'tests', 'languages' ) )->name( $dws_framework_component_files );
 	}, $dws_framework_components ),
 
 	/**
