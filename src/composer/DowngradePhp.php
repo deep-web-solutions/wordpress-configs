@@ -42,6 +42,11 @@ class DowngradePhp {
 		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true );
 		$autoload_files   = array_merge( $composer_package['autoload']['files'] ?? array(), $composer_package['autoload-dev']['files'] ?? array() );
 
+		$console_IO->write( 'Setting autoloaded files as an environment variable...' );
+
+		$autoload_files = json_encode( $autoload_files );
+		putenv( "dws_autloadedFiles={$autoload_files}" );
+
 		$console_IO->write( 'Downgrading PHP...' );
 
 		$event_dispatcher = $event->getComposer()->getEventDispatcher();

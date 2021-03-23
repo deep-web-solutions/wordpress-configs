@@ -23,7 +23,7 @@
     "php": ">=7.4",
     "ext-json": "*",
     "humbug/php-scoper": ">=0.14.0",
-    "rector/rector": ">=v0.8.6"
+    "rector/rector": ">=v0.10.3"
   },
   "require-dev": {
     "composer/composer": "^2.0",
@@ -37,6 +37,11 @@
       "src"
     ]
   },
+  "autoload-dev": {
+    "files": [
+      "tests/rector/php74.php"
+    ]
+  },
 
   "scripts": {
     "composer:install": [
@@ -47,7 +52,7 @@
     ],
 
     "downgrade-php": [
-      "@php vendor/bin/rector process ./tests/rector --config=./src/rector/downgrade-php.php"
+      "@php vendor/bin/rector process --dry-run --debug --config=src/rector/downgrade-php.php"
     ],
 
     "test:wp-isolate-references": [
