@@ -35,7 +35,7 @@ class PrefixDependencies {
 		}
 
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
-		putenv("dws_vendorDir={$vendorDir}");
+		putenv( "dws_vendorDir={$vendorDir}" );
 
 		$console_IO->write( 'Making sure autoloaded files exist...' );
 
@@ -48,6 +48,9 @@ class PrefixDependencies {
 				touch( $file );
 			}
 		}
+
+		$console_IO->write( '' );
+		putenv( "dws_packageName={$composer_package['name']}" );
 
 		$console_IO->write( 'Prefixing dependencies...' );
 
