@@ -52,6 +52,7 @@ return array(
 		function ( string $file_path, string $prefix, string $content ) use ( $dws_reference_functions, $dws_reference_classes ) {
 			foreach ( $dws_reference_functions as $function ) {
 				$content = str_replace( '\\' . $prefix . '\\' . $function . '(', '\\' . $function . '(', $content );
+				$content = str_replace( $prefix . '\\' . $function . '(', '\\' . $function . '(', $content );
 			}
 			foreach ( $dws_reference_classes as $class ) {
 				$content = str_replace( 'use ' . $prefix . '\\' . $class . ';', '', $content );
