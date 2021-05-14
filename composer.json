@@ -29,8 +29,6 @@
     "composer/composer": "^2.0",
     "php-stubs/wordpress-stubs": "^5.5"
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
 
   "autoload": {
     "classmap": [
