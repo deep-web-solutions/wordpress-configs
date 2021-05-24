@@ -9,8 +9,9 @@ return static function ( ContainerConfigurator $container_configurator ): void {
 	$parameters = $container_configurator->parameters();
 
 	// Set downgrading rules
-	$parameters->set( Option::SETS, [ DowngradeSetList::PHP_80, DowngradeSetList::PHP_74, DowngradeSetList::PHP_73,
-		DowngradeSetList::PHP_72, DowngradeSetList::PHP_71, DowngradeSetList::PHP_70, DowngradeSetList::PHP_53 ] );
+	foreach( array( DowngradeSetList::PHP_80, DowngradeSetList::PHP_74, DowngradeSetList::PHP_73, DowngradeSetList::PHP_72, DowngradeSetList::PHP_71, DowngradeSetList::PHP_70, DowngradeSetList::PHP_53 ) as $set ) {
+		$container_configurator->import( $set );
+	}
 
 	// Set the paths to refactor.
 	$parameters->set( Option::PATHS, json_decode( getenv( 'dws_autloadedFiles' ), true ) );
