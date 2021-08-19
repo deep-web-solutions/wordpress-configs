@@ -23,7 +23,8 @@
     "php": ">=7.4",
     "ext-json": "*",
     "humbug/php-scoper": "^0.15",
-    "rector/rector": "^v0.11"
+    "rector/rector": "^v0.11",
+    "nikic/php-parser": "4.11"
   },
   "require-dev": {
     "composer/composer": "^2.0",
