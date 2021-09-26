@@ -52,6 +52,9 @@ class PrefixDependencies {
 		$console_IO->write( 'Setting package name as an environment variable...' );
 		putenv( "dws_packageName={$composer_package['name']}" );
 
+		$console_IO->write( 'Setting plugin text domain as an environment variable...' );
+		putenv( "dws_textDomain={$composer_package['text-domain']}" );
+
 		$console_IO->write( 'Prefixing dependencies...' );
 
 		$event_dispatcher = $event->getComposer()->getEventDispatcher();
