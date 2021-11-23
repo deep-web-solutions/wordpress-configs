@@ -26,15 +26,11 @@ return array(
 	 */
 	'patchers' => array(
 		function ( string $file_path, string $prefix, string $content ) {
-			if ( false !== strpos( $file_path, 'Factory.php' ) ) {
-				$content = str_replace(
-					array( '$decorator = "Dompdf\\', '$reflower = "Dompdf\\'  ),
-					array( "\$decorator = \"$prefix\\Dompdf\\", "\$reflower = \"$prefix\\Dompdf\\" ),
-					$content
-				);
-			}
-
-			return $content;
+			return str_replace(
+				array( '"Dompdf\\\\', '\'Dompdf\\\\', '"\\\\Dompdf\\\\', '\'\\\\Dompdf\\\\' ),
+				array( "\"$prefix\\\\Dompdf\\\\", "'$prefix\\\\Dompdf\\\\", "\"\\\\$prefix\\\\Dompdf\\\\", "'\\\\$prefix\\\\Dompdf\\\\" ),
+				$content
+			);
 		},
 	),
 );
