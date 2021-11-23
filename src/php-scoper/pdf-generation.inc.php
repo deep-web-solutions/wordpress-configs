@@ -27,7 +27,7 @@ return array(
 	'patchers' => array(
 		function ( string $file_path, string $prefix, string $content ) {
 			return str_replace(
-				array( '"Dompdf\\', '\'Dompdf\\', '"\\Dompdf\\', '\'\\Dompdf\\' ),
+				array( '"Dompdf\\', '\'Dompdf\\', '"\\\\Dompdf\\', '\'\\\\Dompdf\\' ),
 				array( "\"$prefix\\\\Dompdf\\", "'$prefix\\\\Dompdf\\", "\"\\\\$prefix\\\\Dompdf\\", "'\\\\$prefix\\\\Dompdf\\" ),
 				$content
 			);
