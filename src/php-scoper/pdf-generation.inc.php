@@ -11,7 +11,7 @@ return array(
 	 * For more see: https://github.com/humbug/php-scoper#finders-and-paths
 	 */
 	'finders'  => array(
-		Finder::create()->files()->in( 'vendor/dompdf/dompdf' )->name( array( '*.php', 'LICENSE.LGPL', 'composer.json' ) ),
+		Finder::create()->files()->in( 'vendor/dompdf/dompdf' )->name( array( '*.php', '*.afm', '*.ttf', '*.ufm', '*.ser', '*.html', '*.css', '*.png', '*.svg', 'LICENSE.LGPL', 'composer.json' ) ),
 		Finder::create()->files()->in( 'vendor/phenx' )->exclude( 'tests' )->name( array( '*.php', '*.ttf', '*.map', 'LICENSE', 'COPYING', 'COPYING.GPL', 'composer.json' ) )->notName( 'autoload.php' ),
 		Finder::create()->files()->in( 'vendor/sabberworm/php-css-parser' )->exclude( 'tests' )->name( array( '*.php', 'composer.json' ) )
 	),
