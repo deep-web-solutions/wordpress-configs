@@ -44,7 +44,47 @@ return array(
 		return Finder::create()->files()->in( "vendor/deep-web-solutions/{$component}" )->exclude( array( 'tests', 'languages' ) )->name( $dws_framework_component_files );
 	}, $dws_framework_components ),
 
+	/**
+	 * When scoping PHP files, there will be scenarios where some of the code being scoped indirectly references the
+	 * original namespace. These will include, for example, strings or string manipulations. PHP-Scoper has limited
+	 * support for prefixing such strings. To circumvent that, you can define patchers to manipulate the file to your
+	 * heart contents.
+	 *
+	 * For more see: https://github.com/humbug/php-scoper#patchers
+	 */
+	'patchers'                   => array(
+		function ( string $file_path, string $prefix, string $content ) use ( $dws_reference_functions, $dws_reference_classes ) {
+			foreach ( $dws_reference_functions as $function ) {
+				$content = str_replace( '\\' . $prefix . '\\' . $function . '(', '\\' . $function . '(', $content );
+				$content = str_replace( 'function_exists(\'' . $prefix . '\\\\' . $function, 'function_exists(\'' . '\\' . $function, $content );
+			}
+			foreach ( $dws_reference_classes as $class ) {
+				$content = str_replace( 'use ' . $prefix . '\\' . $class . ';', '', $content );
+				$content = str_replace( '\\' . $prefix . '\\' . $class, '\\' . $class, $content );
+			}
+
+			return $content;
+		},
+		function ( string $file_path, string $prefix, string $content ) use ( $dws_plugin_language_domain, $dws_framework_language_domains ) {
+			foreach ( $dws_framework_language_domains as $language_domain ) {
+				$content = str_replace( $language_domain, $dws_plugin_language_domain, $content );
+			}
+
+			if ( false !== strpos( $file_path, 'bootstrap.php' ) ) {
+				$content = str_replace(
+					"\\load_plugin_textdomain('{$dws_plugin_language_domain}', \\false, \\dirname(\\plugin_basename(__FILE__)) . '/src/languages');",
+					'// Line removed during PHP-scoping.',
+					$content
+				);
+			}
+
+			return $content;
+		}
+	),
+
+	/*
 	'expose-global-functions' => false,
 	'exclude-classes'         => $dws_reference_classes,
 	'exclude-functions'       => $dws_reference_functions,
+	*/
 );
