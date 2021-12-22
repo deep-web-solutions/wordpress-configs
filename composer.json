@@ -47,7 +47,7 @@
       "@composer install --ignore-platform-reqs"
     ],
     "composer:update": [
-      "@composer update --ignore-platform-reqs"
+      "@composer update"
     ],
 
     "downgrade-php": [
@@ -63,5 +63,12 @@
     "test:downgrade-php": [
       "DeepWebSolutions\\Config\\Composer\\DowngradePhp::postAutoloadDump"
     ]
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/*": true,
+      "deep-web-solutions/*": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }
