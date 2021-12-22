@@ -14,14 +14,14 @@ use Composer\Script\Event;
  */
 class PrefixDependencies {
 	/**
-	 * Action for before installing or updating the packages.
+	 * Action for before dumping the autoloader.
 	 *
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
 	 * @param   Event   $event
 	 */
-	public static function preCommand( Event $event ): void {
+	public static function preAutoloadDump( Event $event ): void {
 		$console_IO = $event->getIO();
 		$vendorDir  = $event->getComposer()->getConfig()->get( 'vendor-dir' );
 
