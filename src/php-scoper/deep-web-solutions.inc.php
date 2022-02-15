@@ -19,14 +19,6 @@ foreach ( $dws_framework_components as $key => $component ) {
 	}
 }
 
-$extra_finders = array();
-if ( isset( $dws_framework_components[2] ) ) {
-	$extra_finders = array(
-		Finder::create()->files()->in( 'vendor/psr/container' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
-		Finder::create()->files()->in( 'vendor/psr/log' )->exclude( 'Test' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
-	);
-}
-
 $dws_reference_classes   = array();
 $dws_reference_functions = array();
 
@@ -48,12 +40,9 @@ return array(
 	 *
 	 * For more see: https://github.com/humbug/php-scoper#finders-and-paths
 	 */
-	'finders'                    => array_merge(
-		$extra_finders,
-		array_map( function ( string $component ) use ( $dws_framework_component_files ) {
-			return Finder::create()->files()->in( "vendor/deep-web-solutions/{$component}" )->exclude( array( 'tests', 'languages' ) )->name( $dws_framework_component_files );
-		}, $dws_framework_components )
-	),
+	'finders'                    => array_map( function ( string $component ) use ( $dws_framework_component_files ) {
+		return Finder::create()->files()->in( "vendor/deep-web-solutions/{$component}" )->exclude( array( 'tests', 'languages' ) )->name( $dws_framework_component_files );
+	}, $dws_framework_components ),
 
 	/**
 	 * When scoping PHP files, there will be scenarios where some of the code being scoped indirectly references the
