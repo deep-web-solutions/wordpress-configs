@@ -12,6 +12,7 @@ return array(
 	 */
 	'finders'  => array(
 		Finder::create()->files()->in( 'vendor/jouwweb/sendcloud' )->exclude( array( 'test', '.circleci' ) )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+		Finder::create()->files()->in( 'vendor/papertower/wp-rest-api-psr7' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 	),
 
 	/**
