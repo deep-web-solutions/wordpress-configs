@@ -12,7 +12,17 @@ return array(
 	 */
 	'finders'  => array(
 		Finder::create()->files()->in( 'vendor/jouwweb/sendcloud' )->exclude( array( 'test', '.circleci' ) )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
-		Finder::create()->files()->in( 'vendor/guzzlehttp/guzzle' )->name( array( '*.php', 'LICENSE', 'composer.json' ) )->notName( 'autoload.php' ),
+
+		Finder::create()->files()->in( 'vendor/guzzlehttp/guzzle' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+		Finder::create()->files()->in( 'vendor/guzzlehttp/promises' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+		Finder::create()->files()->in( 'vendor/guzzlehttp/psr7' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+
+		Finder::create()->files()->in( 'vendor/psr/http-client' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+		Finder::create()->files()->in( 'vendor/psr/http-factory' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+		Finder::create()->files()->in( 'vendor/psr/http-message' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+
+		Finder::create()->files()->in( 'vendor/symfony/deprecation-contracts' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
+		Finder::create()->files()->in( 'vendor/ralouphie/getallheaders' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 	),
 
 	/**
