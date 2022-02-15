@@ -25,7 +25,10 @@ return array(
 	 */
 	'patchers' => array(
 		function ( string $file_path, string $prefix, string $content ) {
-			return str_replace( '\\' . $prefix . '\\WP_REST_Request', '\\WP_REST_Request', $content );
+			$content = str_replace( '\\' . $prefix . '\\WP_REST_Request', '\\WP_REST_Request', $content );
+			$content = str_replace( '\\' . $prefix . '\\WP_REST_Response', '\\WP_REST_Response', $content );
+
+			return $content;
 		},
 	),
 );
