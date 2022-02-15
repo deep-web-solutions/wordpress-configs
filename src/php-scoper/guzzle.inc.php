@@ -2,6 +2,8 @@
 
 use Isolated\Symfony\Component\Finder\Finder;
 
+// NOTE: when scoping Guzzle, you should include the polyfills 'symfony/deprecation-contracts' and 'ralouphie/getallheaders' as required packages.
+
 return array(
 	/**
 	 * By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
@@ -14,9 +16,6 @@ return array(
 		Finder::create()->files()->in( 'vendor/guzzlehttp/guzzle' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 		Finder::create()->files()->in( 'vendor/guzzlehttp/promises' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 		Finder::create()->files()->in( 'vendor/guzzlehttp/psr7' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
-
-		Finder::create()->files()->in( 'vendor/symfony/deprecation-contracts' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
-		Finder::create()->files()->in( 'vendor/ralouphie/getallheaders' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 	),
 
 	/**
