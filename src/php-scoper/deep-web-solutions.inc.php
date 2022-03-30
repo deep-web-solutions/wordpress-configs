@@ -2,11 +2,11 @@
 
 use Isolated\Symfony\Component\Finder\Finder;
 
-$text_domain = $_SESSION['dws_textDomain'];
+$text_domain = $_ENV['dws_textDomain'];
 if ( false !== $text_domain ) {
 	$dws_plugin_language_domain = $text_domain;
 } else {
-	$package_name                   = $_SESSION['dws_packageName'];
+	$package_name                   = $_ENV['dws_packageName'];
 	$dws_plugin_language_domain     = str_replace(
 		array( 'wp', 'wc' ),
 		array( 'dws', 'dws-wc' ),
@@ -18,7 +18,7 @@ $dws_framework_language_domains = array( 'dws-wp-framework-bootstrapper', 'dws-w
 $dws_framework_component_files  = array( '*.php', 'LICENSE', 'composer.json', '.js', '.css', '*.svg' );
 $dws_framework_components       = array( 'wp-framework-bootstrapper', 'wp-framework-helpers', 'wp-framework-foundations', 'wp-framework-utilities', 'wp-framework-core', 'wp-framework-settings', 'wp-framework-woocommerce' );
 foreach ( $dws_framework_components as $key => $component ) {
-	if ( ! is_dir( $_SESSION['dws_vendorDir'] . "/deep-web-solutions/{$component}" ) ) {
+	if ( ! is_dir( $_ENV['dws_vendorDir'] . "/deep-web-solutions/{$component}" ) ) {
 		unset( $dws_framework_components[ $key ], $dws_framework_language_domains[ $key ] );
 	}
 }
@@ -26,7 +26,7 @@ foreach ( $dws_framework_components as $key => $component ) {
 $dws_reference_classes   = array();
 $dws_reference_functions = array();
 
-$dws_reference_files = Finder::create()->files()->in( $_SESSION['dws_vendorDir'] . '/deep-web-solutions/' )->name( array( 'wp-references.json', 'other-references.json' ) );
+$dws_reference_files = Finder::create()->files()->in( $_ENV['dws_vendorDir'] . '/deep-web-solutions/' )->name( array( 'wp-references.json', 'other-references.json' ) );
 foreach ( $dws_reference_files as $file ) {
 	$references              = json_decode( $file->getContents(), true, 512, JSON_THROW_ON_ERROR );
 	$dws_reference_classes   = array_merge( $dws_reference_classes, $references['classes'] );

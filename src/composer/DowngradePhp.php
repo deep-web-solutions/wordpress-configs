@@ -36,12 +36,8 @@ class DowngradePhp {
 			return;
 		}
 
-		if ( PHP_SESSION_NONE === session_status() ) {
-			session_start();
-		}
-
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
-		$_SESSION['dws_vendorDir'] = $vendorDir;
+		$_ENV['dws_vendorDir'] = $vendorDir;
 
 		$console_IO->write( 'Collecting autoloaded files...' );
 
@@ -51,7 +47,7 @@ class DowngradePhp {
 		$console_IO->write( 'Setting autoloaded files as an environment variable...' );
 
 		$autoload_files = json_encode( $autoload_files, JSON_THROW_ON_ERROR );
-		$_SESSION['dws_autloadedFiles'] = $autoload_files;
+		$_ENV['dws_autloadedFiles'] = $autoload_files;
 
 		$console_IO->write( 'Downgrading PHP...' );
 

@@ -15,10 +15,10 @@ return static function ( ContainerConfigurator $container_configurator ): void {
 	}
 
 	// Set the paths to refactor.
-	$parameters->set( Option::PATHS, json_decode( $_SESSION['dws_autloadedFiles'], true, 512, JSON_THROW_ON_ERROR ) );
+	$parameters->set( Option::PATHS, json_decode( $_ENV['dws_autloadedFiles'], true, 512, JSON_THROW_ON_ERROR ) );
 
 	// Set composer autoloader.
-	$parameters->set( Option::BOOTSTRAP_FILES, array( $_SESSION['dws_vendorDir'] . '/autoload.php' ) );
+	$parameters->set( Option::BOOTSTRAP_FILES, array( $_ENV['dws_vendorDir'] . '/autoload.php' ) );
 
 	// Set PHP version to downgrade to.
 	$parameters->set( Option::PHP_VERSION_FEATURES, PhpVersion::PHP_53 );
