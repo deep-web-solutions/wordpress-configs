@@ -1,9 +1,13 @@
 <?php
 
+use Dotenv\Dotenv;
 use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\Set\ValueObject\DowngradeSetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+$dotenv = Dotenv::createMutable( '/tmp/' );
+$dotenv->load();
 
 return static function ( ContainerConfigurator $container_configurator ): void {
 	$parameters = $container_configurator->parameters();
@@ -15,7 +19,7 @@ return static function ( ContainerConfigurator $container_configurator ): void {
 	}
 
 	// Set the paths to refactor.
-	$parameters->set( Option::PATHS, json_decode( $_ENV['dws_autloadedFiles'], true, 512, JSON_THROW_ON_ERROR ) );
+	$parameters->set( Option::PATHS, json_decode( $_ENV['dws_autoloadedFiles'], true, 512, JSON_THROW_ON_ERROR ) );
 
 	// Set composer autoloader.
 	$parameters->set( Option::BOOTSTRAP_FILES, array( $_ENV['dws_vendorDir'] . '/autoload.php' ) );

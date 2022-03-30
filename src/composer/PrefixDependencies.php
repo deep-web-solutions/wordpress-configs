@@ -28,7 +28,7 @@ class PrefixDependencies {
 		$vendorDir  = $event->getComposer()->getConfig()->get( 'vendor-dir' );
 
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
-		file_put_contents( '/tmp/.env', "dws_vendorDir=$vendorDir" . PHP_EOL, FILE_APPEND );
+		file_put_contents( '/tmp/.env', "dws_vendorDir=$vendorDir" . PHP_EOL );
 
 		$console_IO->write( 'Making sure autoloaded dependencies files exist...' );
 
