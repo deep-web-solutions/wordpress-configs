@@ -28,7 +28,7 @@ class PrefixDependencies {
 		$vendorDir  = $event->getComposer()->getConfig()->get( 'vendor-dir' );
 
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
-		$_ENV['dws_vendorDir'] = $vendorDir;
+		file_put_contents( '/tmp/.env', "dws_vendorDir=$vendorDir" . PHP_EOL, FILE_APPEND );
 
 		$console_IO->write( 'Making sure autoloaded dependencies files exist...' );
 
@@ -80,10 +80,10 @@ class PrefixDependencies {
 		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true, 512, JSON_THROW_ON_ERROR );
 
 		$console_IO->write( 'Setting package name as an environment variable...' );
-		$_ENV['dws_packageName'] = $composer_package['name'];
+		file_put_contents( '/tmp/.env', "dws_packageName={$composer_package['name']}" . PHP_EOL, FILE_APPEND );
 
 		$console_IO->write( 'Setting plugin text domain as an environment variable...' );
-		$_ENV['dws_textDomain'] = $composer_package['extra']['text-domain'];
+		file_put_contents( '/tmp/.env', "dws_textDomain={$composer_package['extra']['text-domain']}" . PHP_EOL, FILE_APPEND );
 
 		$console_IO->write( 'Prefixing dependencies...' );
 

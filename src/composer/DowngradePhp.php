@@ -37,7 +37,7 @@ class DowngradePhp {
 		}
 
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
-		$_ENV['dws_vendorDir'] = $vendorDir;
+		file_put_contents( '/tmp/.env', "dws_vendorDir=$vendorDir" . PHP_EOL, FILE_APPEND );
 
 		$console_IO->write( 'Collecting autoloaded files...' );
 
@@ -47,7 +47,7 @@ class DowngradePhp {
 		$console_IO->write( 'Setting autoloaded files as an environment variable...' );
 
 		$autoload_files = json_encode( $autoload_files, JSON_THROW_ON_ERROR );
-		$_ENV['dws_autloadedFiles'] = $autoload_files;
+		file_put_contents( '/tmp/.env', "dws_autloadedFiles=$autoload_files" . PHP_EOL, FILE_APPEND );
 
 		$console_IO->write( 'Downgrading PHP...' );
 

@@ -1,6 +1,10 @@
 <?php declare( strict_types = 1 );
 
+use Dotenv\Dotenv;
 use Isolated\Symfony\Component\Finder\Finder;
+
+$dotenv = Dotenv::createMutable( '/tmp/' );
+$dotenv->load();
 
 return array(
 	/**
