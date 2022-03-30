@@ -57,6 +57,8 @@ class PrefixDependencies {
 	 * @version 1.0.0
 	 *
 	 * @param   Event   $event
+	 *
+	 * @throws \JsonException
 	 */
 	public static function postAutoloadDump( Event $event ): void {
 		$console_IO = $event->getIO();
@@ -71,13 +73,19 @@ class PrefixDependencies {
 			return;
 		}
 
-		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true );
+		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true, 512, JSON_THROW_ON_ERROR );
 
 		$console_IO->write( 'Setting package name as an environment variable...' );
-		putenv( "dws_packageName={$composer_package['name']}" );
+		if ( true !== putenv( "dws_packageName={$composer_package['name']}" ) ) {
+			$console_IO->write( 'ERROR: Setting package name as an environment variable failed!!!' );
+			return;
+		}
 
 		$console_IO->write( 'Setting plugin text domain as an environment variable...' );
-		putenv( "dws_textDomain={$composer_package['extra']['text-domain']}" );
+		if ( true !== putenv( "dws_textDomain={$composer_package['extra']['text-domain']}" ) ) {
+			$console_IO->write( 'ERROR: Setting plugin text domain as an environment variable failed!!!' );
+			return;
+		}
 
 		$console_IO->write( 'Prefixing dependencies...' );
 
