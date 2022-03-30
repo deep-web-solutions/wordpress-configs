@@ -2,6 +2,7 @@
 
 use Isolated\Symfony\Component\Finder\Finder;
 
+var_dump( getenv( null ) );
 $text_domain = getenv( 'dws_textDomain', true );
 if ( false !== $text_domain ) {
 	$dws_plugin_language_domain = $text_domain;
