@@ -27,6 +27,10 @@ class PrefixDependencies {
 		$console_IO = $event->getIO();
 		$vendorDir  = $event->getComposer()->getConfig()->get( 'vendor-dir' );
 
+		if ( PHP_SESSION_NONE === session_status() ) {
+			session_start();
+		}
+
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
 		$_SESSION['dws_vendorDir'] = $vendorDir;
 
@@ -78,6 +82,10 @@ class PrefixDependencies {
 		}
 
 		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true, 512, JSON_THROW_ON_ERROR );
+
+		if ( PHP_SESSION_NONE === session_status() ) {
+			session_start();
+		}
 
 		$console_IO->write( 'Setting package name as an environment variable...' );
 		$_SESSION['dws_packageName'] = $composer_package['name'];

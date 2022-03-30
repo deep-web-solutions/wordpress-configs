@@ -36,6 +36,10 @@ class DowngradePhp {
 			return;
 		}
 
+		if ( PHP_SESSION_NONE === session_status() ) {
+			session_start();
+		}
+
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
 		$_SESSION['dws_vendorDir'] = $vendorDir;
 
