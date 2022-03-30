@@ -28,6 +28,6 @@ return array(
 	'patchers'        => array(),
 
 	'files-whitelist' => array(
-		getenv('dws_vendorDir') . '/php-di/php-di/src/Compiler/Template.php',
+		$_SESSION['dws_vendorDir'] . '/php-di/php-di/src/Compiler/Template.php',
 	),
 );

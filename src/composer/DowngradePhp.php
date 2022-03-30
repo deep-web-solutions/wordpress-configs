@@ -19,7 +19,9 @@ class DowngradePhp {
 	 * @since   1.0.0
 	 * @version 1.0.0
 	 *
-	 * @param Event $event
+	 * @param   Event   $event
+	 *
+	 * @throws \JsonException
 	 */
 	public static function postAutoloadDump( Event $event ): void {
 		$console_IO = $event->getIO();
@@ -35,17 +37,17 @@ class DowngradePhp {
 		}
 
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
-		putenv( "dws_vendorDir={$vendorDir}" );
+		$_SESSION['dws_vendorDir'] = $vendorDir;
 
 		$console_IO->write( 'Collecting autoloaded files...' );
 
-		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true );
+		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true, 512, JSON_THROW_ON_ERROR );
 		$autoload_files   = array_merge( $composer_package['autoload']['files'] ?? array(), $composer_package['autoload-dev']['files'] ?? array() );
 
 		$console_IO->write( 'Setting autoloaded files as an environment variable...' );
 
-		$autoload_files = json_encode( $autoload_files );
-		putenv( "dws_autloadedFiles={$autoload_files}" );
+		$autoload_files = json_encode( $autoload_files, JSON_THROW_ON_ERROR );
+		$_SESSION['dws_autloadedFiles'] = $autoload_files;
 
 		$console_IO->write( 'Downgrading PHP...' );
 

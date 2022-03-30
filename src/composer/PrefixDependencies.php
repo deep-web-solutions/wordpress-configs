@@ -28,7 +28,7 @@ class PrefixDependencies {
 		$vendorDir  = $event->getComposer()->getConfig()->get( 'vendor-dir' );
 
 		$console_IO->write( 'Setting vendor dir as an environment variable...' );
-		putenv( "dws_vendorDir={$vendorDir}" );
+		$_SESSION['dws_vendorDir'] = $vendorDir;
 
 		$console_IO->write( 'Making sure autoloaded dependencies files exist...' );
 
@@ -80,16 +80,10 @@ class PrefixDependencies {
 		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true, 512, JSON_THROW_ON_ERROR );
 
 		$console_IO->write( 'Setting package name as an environment variable...' );
-		if ( true !== putenv( "dws_packageName={$composer_package['name']}" ) ) {
-			$console_IO->write( 'ERROR: Setting package name as an environment variable failed!!!' );
-			return;
-		}
+		$_SESSION['dws_packageName'] = $composer_package['name'];
 
 		$console_IO->write( 'Setting plugin text domain as an environment variable...' );
-		if ( true !== putenv( "dws_textDomain={$composer_package['extra']['text-domain']}" ) ) {
-			$console_IO->write( 'ERROR: Setting plugin text domain as an environment variable failed!!!' );
-			return;
-		}
+		$_SESSION['dws_textDomain'] = $composer_package['extra']['text-domain'];
 
 		$console_IO->write( 'Prefixing dependencies...' );
 
