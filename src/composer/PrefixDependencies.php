@@ -20,6 +20,8 @@ class PrefixDependencies {
 	 * @version 1.0.0
 	 *
 	 * @param   Event   $event
+	 *
+	 * @throws \JsonException
 	 */
 	public static function preAutoloadDump( Event $event ): void {
 		$console_IO = $event->getIO();
@@ -30,13 +32,15 @@ class PrefixDependencies {
 
 		$console_IO->write( 'Making sure autoloaded dependencies files exist...' );
 
-		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true );
+		$composer_package = json_decode( file_get_contents( dirname( $vendorDir ) . '/composer.json' ), true, 512, JSON_THROW_ON_ERROR );
 
 		$autoload_files = array_merge( $composer_package['autoload']['files'] ?? array(), $event->isDevMode() ? ( $composer_package['autoload-dev']['files'] ?? array() ) : array() );
 		foreach ( $autoload_files as $file ) {
 			$file = dirname( $vendorDir ) . DIRECTORY_SEPARATOR . $file;
 			if ( ! is_file( $file ) ) {
-				mkdir( dirname( $file ), 0755, true );
+				if ( ! mkdir( $concurrentDirectory = dirname( $file ), 0755, true ) && ! is_dir( $concurrentDirectory ) ) {
+					throw new \RuntimeException( sprintf( 'Directory "%s" was not created', $concurrentDirectory ) );
+				}
 				touch( $file );
 			}
 		}
@@ -44,8 +48,8 @@ class PrefixDependencies {
 		$autoload_directories = array_merge( $composer_package['autoload']['classmap'] ?? array(), $event->isDevMode() ? ( $composer_package['autoload-dev']['classmap'] ?? array() ) : array() );
 		foreach ( $autoload_directories as $directory ) {
 			$directory = dirname( $vendorDir ) . DIRECTORY_SEPARATOR . $directory;
-			if ( ! is_dir( $directory ) ) {
-				mkdir( $directory, 0755, true );
+			if ( ! is_dir( $directory ) && ! mkdir( $directory, 0755, true ) && ! is_dir( $directory ) ) {
+				throw new \RuntimeException( sprintf( 'Directory "%s" was not created', $directory ) );
 			}
 		}
 	}

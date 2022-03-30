@@ -2,11 +2,16 @@
 
 use Isolated\Symfony\Component\Finder\Finder;
 
-if ( false !== getenv( 'dws_textDomain' ) ) {
-	$dws_plugin_language_domain = getenv( 'dws_textDomain' );
+$text_domain = getenv( 'dws_textDomain', true );
+if ( false !== $text_domain ) {
+	$dws_plugin_language_domain = $text_domain;
 } else {
-	$dws_plugin_language_domain     = str_replace( 'wp', 'dws', explode( '/', getenv( 'dws_packageName' ) )[1] );
-	$dws_plugin_language_domain     = str_replace( 'wc', 'dws-wc', $dws_plugin_language_domain );
+	$package_name                   = getenv( 'dws_packageName', true );
+	$dws_plugin_language_domain     = str_replace(
+		array( 'wp', 'wc' ),
+		array( 'dws', 'dws-wc' ),
+		explode( '/', $package_name )[1]
+	);
 }
 
 $dws_framework_language_domains = array( 'dws-wp-framework-bootstrapper', 'dws-wp-framework-helpers', 'dws-wp-framework-foundations', 'dws-wp-framework-utilities', 'dws-wp-framework-core', 'dws-wp-framework-settings', 'dws-wp-framework-woocommerce' );
@@ -24,7 +29,7 @@ $dws_reference_functions = array();
 
 $dws_reference_files = Finder::create()->files()->in( getenv('dws_vendorDir') . '/deep-web-solutions/' )->name( array( 'wp-references.json', 'other-references.json' ) );
 foreach ( $dws_reference_files as $file ) {
-	$references              = json_decode( $file->getContents(), true );
+	$references              = json_decode( $file->getContents(), true, 512, JSON_THROW_ON_ERROR );
 	$dws_reference_classes   = array_merge( $dws_reference_classes, $references['classes'] );
 	$dws_reference_functions = array_merge( $dws_reference_functions, $references['functions'] );
 }
@@ -34,14 +39,14 @@ $dws_reference_functions = array_unique( $dws_reference_functions );
 
 return array(
 	/**
-	 * By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
+	 * By default, when running php-scoper add-prefix, it will prefix all relevant code found in the current working
 	 * directory. You can however define which files should be scoped by defining a collection of Finders in the
 	 * following configuration key.
 	 *
 	 * For more see: https://github.com/humbug/php-scoper#finders-and-paths
 	 */
-	'finders'                    => array_map( function ( string $component ) use ( $dws_framework_component_files ) {
-		return Finder::create()->files()->in( "vendor/deep-web-solutions/{$component}" )->exclude( array( 'tests', 'languages' ) )->name( $dws_framework_component_files );
+	'finders'                    => array_map( static function ( string $component ) use ( $dws_framework_component_files ) {
+		return Finder::create()->files()->in( "vendor/deep-web-solutions/$component" )->exclude( array( 'tests', 'languages' ) )->name( $dws_framework_component_files );
 	}, $dws_framework_components ),
 
 	/**
@@ -72,7 +77,7 @@ return array(
 
 			if ( false !== strpos( $file_path, 'bootstrap.php' ) ) {
 				$content = str_replace(
-					"\\load_plugin_textdomain('{$dws_plugin_language_domain}', \\false, \\dirname(\\plugin_basename(__FILE__)) . '/src/languages');",
+					"\\load_plugin_textdomain('$dws_plugin_language_domain', \\false, \\dirname(\\plugin_basename(__FILE__)) . '/src/languages');",
 					'// Line removed during PHP-scoping.',
 					$content
 				);
