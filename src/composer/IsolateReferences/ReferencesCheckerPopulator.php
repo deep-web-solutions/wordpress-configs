@@ -99,7 +99,7 @@ class ReferencesCheckerPopulator extends ReferencesPopulator {
 					}
 				}
 			}
-		} elseif ( $node instanceof Node\Expr\FuncCall ) {
+		} elseif ( $node instanceof Node\Expr\FuncCall && $node->name instanceof Node\Name ) {
 			$function_name = $node->name->parts[0];
 			foreach ( $this->functions as $function ) {
 				if ( strtolower( $function_name ) === strtolower( $function ) ) {
