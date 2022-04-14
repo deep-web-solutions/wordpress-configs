@@ -15,7 +15,7 @@ return array(
 	 * For more see: https://github.com/humbug/php-scoper#finders-and-paths
 	 */
 	'finders'         => array(
-		Finder::create()->files()->in( 'vendor/opis/closure' )->exclude( 'tests' )->name( array( '*.php', 'LICENSE', 'composer.json' ) )->notName( 'autoload.php' ),
+		Finder::create()->files()->in( 'vendor/laravel/serializable-closure' )->name( array( '*.php', 'LICENSE.md', 'composer.json' ) ),
 		Finder::create()->files()->in( 'vendor/php-di/phpdoc-reader' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 		Finder::create()->files()->in( 'vendor/php-di/invoker' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
 		Finder::create()->files()->in( 'vendor/php-di/php-di' )->name( array( '*.php', 'LICENSE', 'composer.json' ) ),
