@@ -62,13 +62,10 @@ class IsolateWordPressReferences {
 		// Output WP result as JSON.
 		file_put_contents(
 			dirname( $vendorDir ) . '/wp-stubs.json',
-			json_encode(
-				array(
-					'classes'   => $wp_classes,
-					'functions' => $wp_functions
-				),
-				JSON_PRETTY_PRINT
-			)
+			json_encode( array(
+				'classes'   => $wp_classes,
+				'functions' => $wp_functions
+			), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT )
 		);
 
 		// Cross-check with all the classes and functions used in the project files.
@@ -87,13 +84,10 @@ class IsolateWordPressReferences {
 		// Output result as JSON.
 		file_put_contents(
 			dirname( $vendorDir ) . '/wp-references.json',
-			json_encode(
-				array(
-					'classes'   => array_values( array_unique( $project_wp_classes, SORT_STRING ) ),
-					'functions' => array_values( array_unique( $project_wp_functions, SORT_STRING ) ),
-				),
-				JSON_PRETTY_PRINT
-			)
+			json_encode( array(
+				'classes'   => array_values( array_unique( $project_wp_classes, SORT_STRING ) ),
+				'functions' => array_values( array_unique( $project_wp_functions, SORT_STRING ) ),
+			), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT )
 		);
 	}
 }
