@@ -150,16 +150,20 @@ class ReferencesCheckerPopulator extends ReferencesPopulator {
 	 */
 	protected function type_to_string_array( $type ): array {
 		if ( $type instanceof Node\UnionType ) {
-			return array_map( function( $value ): string {
+			return array_map( static function( $value ): string {
 				return $value instanceof Node\Identifier
 					? $value->name
 					: $value->parts[0];
 			}, $type->types );
-		} elseif ( $type instanceof Node\NullableType ) {
+		}
+
+		if ( $type instanceof Node\NullableType ) {
 			return (array) ( $type->type instanceof Node\Identifier
 				? $type->type->name
 				: $type->type->parts[0] );
-		} elseif ( $type instanceof Node\Name ) {
+		}
+
+		if ( $type instanceof Node\Name ) {
 			return (array) $type->parts[0];
 		}
 

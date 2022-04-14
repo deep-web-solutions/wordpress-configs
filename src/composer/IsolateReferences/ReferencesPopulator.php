@@ -75,7 +75,9 @@ class ReferencesPopulator extends NodeVisitorAbstract {
 		if ( $node instanceof Node\Stmt\Class_ ) {
 			$this->classes[] = $node->name->name;
 			return NodeTraverser::DONT_TRAVERSE_CHILDREN;
-		} elseif ( $node instanceof Node\Stmt\Function_ ) {
+		}
+
+		if ( $node instanceof Node\Stmt\Function_ ) {
 			$this->functions[] = $node->name->name;
 		}
 
