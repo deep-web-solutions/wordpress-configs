@@ -4,7 +4,7 @@ namespace DeepWebSolutions\Config\Composer;
 
 use Composer\Script\Event;
 use DeepWebSolutions\Config\Composer\IsolateReferences\{ReferencesPopulator, ReferencesCheckerPopulator};
-use PhpParser\{NodeTraverser, ParserFactory};
+use PhpParser\{Lexer\Emulative, NodeTraverser, ParserFactory};
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -46,7 +46,7 @@ class IsolateWordPressReferences {
 		/* @noinspection PhpIncludeInspection */
 		require $vendorDir . '/autoload.php';
 
-		$parser    = ( new ParserFactory() )->create( ParserFactory::ONLY_PHP7 );
+		$parser    = ( new ParserFactory() )->create( ParserFactory::ONLY_PHP7, new Emulative( array( 'phpVersion' => Emulative::PHP_7_4 ) ) );
 		$traverser = new NodeTraverser();
 
 		// Compile a list of all WP global functions and classes.
