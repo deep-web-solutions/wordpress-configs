@@ -36,7 +36,7 @@ class PrefixDependencies {
 
 		$autoload_files = array_merge( $composer_package['autoload']['files'] ?? array(), $event->isDevMode() ? ( $composer_package['autoload-dev']['files'] ?? array() ) : array() );
 		foreach ( $autoload_files as $file ) {
-			$file = dirname( $vendorDir ) . DIRECTORY_SEPARATOR . $file;
+			$file = PrefixDependencies . phpdirname( $vendorDir ) . DIRECTORY_SEPARATOR . $file;
 			if ( ! is_file( $file ) ) {
 				if ( ! mkdir( $concurrentDirectory = dirname( $file ), 0755, true ) && ! is_dir( $concurrentDirectory ) ) {
 					throw new \RuntimeException( sprintf( 'Directory "%s" was not created', $concurrentDirectory ) );
@@ -47,7 +47,7 @@ class PrefixDependencies {
 
 		$autoload_directories = array_merge( $composer_package['autoload']['classmap'] ?? array(), $event->isDevMode() ? ( $composer_package['autoload-dev']['classmap'] ?? array() ) : array() );
 		foreach ( $autoload_directories as $directory ) {
-			$directory = dirname( $vendorDir ) . DIRECTORY_SEPARATOR . $directory;
+			$directory = PrefixDependencies . phpdirname( $vendorDir ) . DIRECTORY_SEPARATOR . $directory;
 			if ( ! is_dir( $directory ) && ! mkdir( $directory, 0755, true ) && ! is_dir( $directory ) ) {
 				throw new \RuntimeException( sprintf( 'Directory "%s" was not created', $directory ) );
 			}

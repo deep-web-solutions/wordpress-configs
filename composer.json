@@ -3,16 +3,8 @@
   "type": "library",
 
   "description": "A collection of shared configuration files across multiple WordPress projects.",
-  "keywords": ["wordpress", "Deep Web Solutions", "config"],
-  "homepage": "https://www.deep-web-solutions.com",
   "license": "MIT",
   "authors": [
-    {
-      "name": "Antonius Hegyes",
-      "email": "a.hegyes@deep-web-solutions.com",
-      "homepage": "https://www.linkedin.com/in/tonyhegyes",
-      "role": "Developer"
-    },
     {
       "name": "Contributors",
       "homepage": "https://github.com/deep-web-solutions/wordpress-configs/graphs/contributors"
@@ -20,55 +12,26 @@
   ],
 
   "require": {
-    "php": ">=7.4",
-    "ext-json": "*",
-    "humbug/php-scoper": "^0.15",
-    "rector/rector": "^v0.11",
-    "nikic/php-parser": "^4.13",
-    "vlucas/phpdotenv": "^5.4"
+    "php": ">=8.4",
+    "ext-json": "*"
   },
   "require-dev": {
-    "composer/composer": "^2.0",
-    "php-stubs/wordpress-stubs": "^5.5"
-  },
+    "composer/composer": "^2",
 
-  "autoload": {
-    "classmap": [
-      "src"
-    ]
-  },
-  "autoload-dev": {
-    "files": [
-      "tests/rector/php74.php"
-    ]
+    "wp-coding-standards/wpcs": "^3",
+    "phpcompatibility/phpcompatibility-wp": "*"
   },
 
   "scripts": {
-    "composer:install": [
-      "@composer install --ignore-platform-reqs"
-    ],
-    "composer:update": [
-      "@composer update"
-    ],
-
-    "downgrade-php": [
-      "@php vendor/bin/rector process --dry-run --debug --config=src/rector/downgrade-php.php"
-    ],
-
-    "test:wp-isolate-references": [
-      "DeepWebSolutions\\Config\\Composer\\IsolateWordPressReferences::postAutoloadDump"
-    ],
-    "test:prefix-dependencies": [
-      "DeepWebSolutions\\Config\\Composer\\PrefixDependencies::postAutoloadDump"
-    ],
-    "test:downgrade-php": [
-      "DeepWebSolutions\\Config\\Composer\\DowngradePhp::postAutoloadDump"
+    "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
+    "packages-update": [
+      "@composer clear-cache",
+      "@composer update --prefer-stable --ignore-platform-reqs --no-interaction"
     ]
   },
   "config": {
     "allow-plugins": {
       "composer/*": true,
-      "deep-web-solutions/*": true,
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
