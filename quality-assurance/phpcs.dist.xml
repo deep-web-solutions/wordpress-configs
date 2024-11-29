@@ -41,6 +41,8 @@
 
 	<!-- Run against the WordPress-Docs ruleset and check for documentation standards. -->
 	<rule ref="WordPress-Docs">
+		<!-- Ignore missing file comment. -->
+		<exclude name="Squiz.Commenting.FileComment.Missing"/>
 		<!-- Ignore end char rule since it conflicts with PhpStorm's code folding regions. -->
 		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
 	</rule>
