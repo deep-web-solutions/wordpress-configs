@@ -20,6 +20,6 @@ foreach ( array( 'bootstrap.php', 'functions.php' ) as $analyzeFile ) {
 	}
 }
 
-$config['excludePaths'][] = $workingDirectory . '/tests/*/_generated/*';
+$config['parameters']['excludePaths'][] = $workingDirectory . '/tests/*/_generated/*';
 
 return $config;
