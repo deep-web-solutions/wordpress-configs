@@ -3,4 +3,3 @@ includes:
 
 parameters:
     level: max
-    errorFormat: github
