@@ -1,7 +1,5 @@
+includes:
+    - phpstan.dist.neon.php
+
 parameters:
     level: max
-    scanDirectories:
-        - dependencies
-    paths:
-        - src
-        - tests
