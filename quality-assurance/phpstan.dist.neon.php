@@ -9,7 +9,7 @@ foreach ( array( 'dependencies', 'vendor/johnpbloch/wordpress-core' ) as $discov
 	}
 }
 
-foreach ( array( 'src', 'includes', 'tests' ) as $analyzeDirectory ) {
+foreach ( array( 'src', 'includes' ) as $analyzeDirectory ) {
 	if ( is_dir( $workingDirectory . '/' . $analyzeDirectory ) ) {
 		$config['parameters']['paths'][] = $workingDirectory . '/' . $analyzeDirectory;
 	}
@@ -19,7 +19,5 @@ foreach ( array( 'bootstrap.php', 'functions.php' ) as $analyzeFile ) {
 		$config['parameters']['paths'][] = $workingDirectory . '/' . $analyzeFile;
 	}
 }
-
-$config['parameters']['excludePaths'][] = $workingDirectory . '/tests/*/_generated/*';
 
 return $config;
