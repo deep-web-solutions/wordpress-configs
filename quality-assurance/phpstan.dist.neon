@@ -3,4 +3,3 @@ includes:
 
 parameters:
     level: max
-    memoryLimit: 1G
