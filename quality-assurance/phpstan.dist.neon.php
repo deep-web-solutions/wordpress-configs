@@ -20,4 +20,8 @@ foreach ( array( 'src', 'includes' ) as $analyzeDirectory ) {
 	}
 }
 
+if ( is_file( $workingDirectory . '/bootstrap.php' ) ) {
+	$config['parameters']['WPCompat']['pluginFile'] = $workingDirectory . '/bootstrap.php';
+}
+
 return $config;
