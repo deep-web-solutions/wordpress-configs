@@ -15,6 +15,8 @@
     "php": ">=8.4",
     "ext-json": "*",
 
+    "nikic/php-parser": "^5",
+
     "wp-coding-standards/wpcs": "^3",
     "phpcompatibility/phpcompatibility-wp": "*",
 
@@ -33,7 +35,15 @@
     "johnpbloch/wordpress-core": "*"
   },
 
+  "autoload": {
+    "classmap": [
+      "composer"
+    ]
+  },
+
   "scripts": {
+    "generate-autoloader": "@composer dump-autoload --ignore-platform-reqs -o",
+
     "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
     "packages-update": [
       "@composer clear-cache",
