@@ -53,9 +53,6 @@
       "@php vendor/bin/rector process --dry-run --debug --config=src/rector/downgrade-php.php"
     ],
 
-    "test:wp-isolate-references": [
-      "DeepWebSolutions\\Config\\Composer\\IsolateWordPressReferences::postAutoloadDump"
-    ],
     "test:prefix-dependencies": [
       "DeepWebSolutions\\Config\\Composer\\PrefixDependencies::postAutoloadDump"
     ],

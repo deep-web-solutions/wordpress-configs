@@ -44,6 +44,12 @@
   "scripts": {
     "generate-autoloader": "@composer dump-autoload --ignore-platform-reqs -o",
 
+    "test:find-wp-core-calls": [
+      "@putenv WP_CORE_CALLS_OUTPUT_DIR=tests/wp-core-calls",
+      "@putenv WP_CORE_CALLS_OUTPUT_FILE=output-actual.json",
+      "DeepWebSolutions\\Config\\Composer\\FindWPCoreCalls::postAutoloadDump"
+    ],
+
     "packages-install": "@composer install --ignore-platform-reqs --no-interaction",
     "packages-update": [
       "@composer clear-cache",

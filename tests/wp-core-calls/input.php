@@ -1,7 +1,7 @@
 <?php
 
 add_action( 'test', function() {} );
-new WP_User_Meta_Session_Tokens();
+WP_User_Meta_Session_Tokens::get_instance( 0 );
 
 function test(): ?WP_Filesystem_Base {
 	global $wp_filesystem;
@@ -24,6 +24,6 @@ function test3( WP_Filesystem_FTPext $param, ?WP_Filesystem_FTPext $param2, stri
 	return $wp_filesystem;
 }
 
-class functions extends WP_Filesystem_Direct {
+class input extends WP_Filesystem_Direct {
 
 }

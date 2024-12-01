@@ -19,6 +19,8 @@ class FindWPCoreCalls {
 	/**
 	 * @param   Event $event The Composer event object.
 	 *
+	 * @throws  \JsonException If the JSON encoding fails.
+	 *
 	 * @return  void
 	 */
 	public static function postAutoloadDump( Event $event ): void {
@@ -40,73 +42,62 @@ class FindWPCoreCalls {
 			return;
 		}
 
-		require_once $vendorDir . '/autoload.php';
-
-		$parser    = new ParserFactory()->createForVersion( PhpVersion::fromComponents( 7, 2 ) ); // Minimum supported in WP6.7 is PHP7.2.
-		$traverser = new NodeTraverser();
-
 		// Compile a list of WordPress Core classes and functions.
-		$wp_stubs_visitor = new _stubsNodeVisitor( $wp_classes, $wp_functions );
-
-		$traverser->addVisitor( $wp_stubs_visitor );
-		$traverser->traverse( $parser->parse( file_get_contents( $wp_stubs_path ) ) );
-		$traverser->removeVisitor( $wp_stubs_visitor );
+		$wp_stubs_parser = new ParserFactory()->createForVersion( PhpVersion::fromComponents( 7, 2 ) ); // Minimum supported in WP6.7 is PHP7.2.
+		new NodeTraverser( $wp_stubs_visitor = new _stubsNodeVisitor() )->traverse( $wp_stubs_parser->parse( file_get_contents( $wp_stubs_path ) ) );
 
 		// Cross-check with all the classes and functions used in the project files.
-		$project_files_visitor = new _projectNodeVisitor( $wp_classes, $wp_functions, $project_wp_classes, $project_wp_functions );
-		$traverser->addVisitor( $project_files_visitor );
+		$project_files_parser    = new ParserFactory()->createForNewestSupportedVersion();
+		$project_files_traverser = new NodeTraverser( $project_files_visitor = new _projectNodeVisitor( $wp_stubs_visitor->functions, $wp_stubs_visitor->classes ) );
 
-		$project_files = Finder::create()->files()->in( dirname( $vendorDir ) )->exclude( array( 'tests', 'vendor', 'node_modules' ) )->name( '*.php' );
+		$project_files = Finder::create()->files()->in( dirname( $vendorDir ) )->exclude( array( 'vendor', 'node_modules' ) )->name( '*.php' );
 		foreach ( $project_files as $file ) {
-			$traverser->traverse( $parser->parse( $file->getContents() ) );
+			$project_files_traverser->traverse( $project_files_parser->parse( $file->getContents() ) );
 		}
 
-		$traverser->removeVisitor( $project_files_visitor );
-
 		// Output result as JSON.
+		$output_dir  = getenv( 'WP_CORE_CALLS_OUTPUT_DIR' ) ?: dirname( $vendorDir );
+		$output_file = getenv( 'WP_CORE_CALLS_OUTPUT_FILE' ) ?: 'wp-core-calls.json';
 		file_put_contents(
-			dirname( $vendorDir ) . '/wp-references.json',
+			"$output_dir/$output_file",
 			json_encode( array(
-				'classes'   => array_values( array_unique( $project_wp_classes, SORT_STRING ) ),
-				'functions' => array_values( array_unique( $project_wp_functions, SORT_STRING ) ),
+				'classes'   => array_values( array_unique( $project_files_visitor->found_classes ) ),
+				'functions' => array_values( array_unique( $project_files_visitor->found_functions ) ),
 			), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT )
 		);
 	}
 }
 
 class _stubsNodeVisitor extends NodeVisitorAbstract {
-	protected array $classes;
-	protected array $functions;
-
-	public function __construct( array &$classes, array &$functions ) {
-		$this->classes   = &$classes;
-		$this->functions = &$functions;
-	}
+	protected(set) array $classes = array();
+	protected(set) array $functions = array();
 
 	/**
 	 * @{inheritDoc}
 	 */
 	public function enterNode( Node $node ): int|null {
-		if ( $node instanceof Node\Stmt\Class_ ) {
-			$this->classes[] = $node->name->name;
-			return NodeVisitor::DONT_TRAVERSE_CHILDREN;
-		}
-
-		if ( $node instanceof Node\Stmt\Function_ ) {
-			$this->functions[] = $node->name->name;
+		switch ( get_class( $node ) ) {
+			case Node\Stmt\Class_::class:
+				$this->classes[] = $node->name->name;
+				return NodeVisitor::DONT_TRAVERSE_CHILDREN;
+			case Node\Stmt\Function_::class:
+				$this->functions[] = $node->name->name;
+				break;
 		}
 
 		return null;
 	}
 }
-class _projectNodeVisitor extends _stubsNodeVisitor {
-	protected array $project_classes;
-	protected array $project_functions;
+class _projectNodeVisitor extends NodeVisitorAbstract {
+	protected array $search_classes;
+	protected array $search_functions;
 
-	public function __construct( array $classes, array $functions, array &$project_classes, array &$project_functions ) {
-		parent::__construct( $classes, $functions );
-		$this->project_classes   = &$project_classes;
-		$this->project_functions = &$project_functions;
+	protected(set) array $found_classes = array();
+	protected(set) array $found_functions = array();
+
+	public function __construct( array $search_functions, array $search_classes ) {
+		$this->search_functions = $search_functions;
+		$this->search_classes   = $search_classes;
 	}
 
 	public function enterNode( Node $node ): int|null {
@@ -114,10 +105,10 @@ class _projectNodeVisitor extends _stubsNodeVisitor {
 			// Check return type(s).
 			$return_types = $this->type_to_string_array( $node->returnType );
 			if ( ! empty( $return_types ) ) {
-				foreach ( $this->classes as $class ) {
+				foreach ( $this->search_classes as $class ) {
 					foreach ( $return_types as $return_type ) {
 						if ( strtolower( $return_type ) === strtolower( $class ) ) {
-							$this->project_classes[] = $return_type;
+							$this->found_classes[] = $return_type;
 						}
 					}
 				}
@@ -127,42 +118,42 @@ class _projectNodeVisitor extends _stubsNodeVisitor {
 			foreach ( $node->getParams() as $param ) {
 				$param_types = $this->type_to_string_array( $param->type );
 				if ( ! empty( $param_types ) ) {
-					foreach ( $this->classes as $class ) {
+					foreach ( $this->search_classes as $class ) {
 						foreach ( $param_types as $param_type ) {
 							if ( strtolower( $param_type ) === strtolower( $class ) ) {
-								$this->project_classes[] = $param_type;
+								$this->found_classes[] = $param_type;
 							}
 						}
 					}
 				}
 			}
 		} elseif ( $node instanceof Node\Expr\FuncCall && $node->name instanceof Node\Name ) {
-			$function_name = $node->name->parts[0];
-			foreach ( $this->functions as $function ) {
+			$function_name = $node->name->getParts()[0];
+			foreach ( $this->search_functions as $function ) {
 				if ( strtolower( $function_name ) === strtolower( $function ) ) {
-					$this->project_functions[] = $function_name;
+					$this->found_functions[] = $function_name;
 				}
 			}
 		} elseif ( $node instanceof Node\Stmt\Class_ && $node->extends ) {
-			$class_name = $node->extends->parts[0];
-			foreach ( $this->classes as $class ) {
+			$class_name = $node->extends->getParts()[0];
+			foreach ( $this->search_classes as $class ) {
 				if ( strtolower( $class_name ) === strtolower( $class ) ) {
-					$this->project_classes[] = $class_name;
+					$this->found_classes[] = $class_name;
 				}
 			}
 		} elseif ( $node instanceof Node\Expr\New_ && 'Name' === $node->class->getType() ) {
-			$class_name = $node->class->parts[0];
-			foreach ( $this->classes as $class ) {
+			$class_name = $node->class->getParts()[0];
+			foreach ( $this->search_classes as $class ) {
 				if ( strtolower( $class_name ) === strtolower( $class ) ) {
-					$this->project_classes[] = $class_name;
+					$this->found_classes[] = $class_name;
 				}
 			}
 		} elseif ( $node instanceof Node\Expr\Instanceof_ || $node instanceof Node\Expr\StaticCall ) {
 			if ( $node->class instanceof Node\Name ) {
-				$class_name = $node->class->parts[0];
-				foreach ( $this->classes as $class ) {
+				$class_name = $node->class->getParts()[0];
+				foreach ( $this->search_classes as $class ) {
 					if ( strtolower( $class_name ) === strtolower( $class ) ) {
-						$this->project_classes[] = $class_name;
+						$this->found_classes[] = $class_name;
 					}
 				}
 			}
@@ -176,18 +167,18 @@ class _projectNodeVisitor extends _stubsNodeVisitor {
 			return array_map( static function( $value ): string {
 				return $value instanceof Node\Identifier
 					? $value->name
-					: $value->parts[0];
+					: $value->getParts()[0];
 			}, $type->types );
 		}
 
 		if ( $type instanceof Node\NullableType ) {
 			return (array) ( $type->type instanceof Node\Identifier
 				? $type->type->name
-				: $type->type->parts[0] );
+				: $type->type->getParts()[0] );
 		}
 
 		if ( $type instanceof Node\Name ) {
-			return (array) $type->parts[0];
+			return (array) $type->getParts()[0];
 		}
 
 		return array();
