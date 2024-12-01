@@ -50,7 +50,7 @@ class FindWPCoreCalls {
 		$project_files_parser    = new ParserFactory()->createForNewestSupportedVersion();
 		$project_files_traverser = new NodeTraverser( $project_files_visitor = new _projectNodeVisitor( $wp_stubs_visitor->functions, $wp_stubs_visitor->classes ) );
 
-		$project_files = Finder::create()->files()->in( dirname( $vendorDir ) )->exclude( array( 'vendor', 'node_modules' ) )->name( '*.php' );
+		$project_files = Finder::create()->files()->in( dirname( $vendorDir ) )->exclude( array( 'vendor', 'node_modules', 'languages' ) )->name( '*.php' );
 		foreach ( $project_files as $file ) {
 			$project_files_traverser->traverse( $project_files_parser->parse( $file->getContents() ) );
 		}
