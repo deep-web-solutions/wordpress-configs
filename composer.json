@@ -29,7 +29,8 @@
     "swissspidy/phpstan-no-private": "^1"
   },
   "require-dev": {
-    "composer/composer": "^2"
+    "composer/composer": "^2",
+    "johnpbloch/wordpress-core": "*"
   },
 
   "scripts": {

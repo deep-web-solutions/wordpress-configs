@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9d4986f89f4ccc0d52c718d5213227b",
+    "content-hash": "14a5cf1956f479bda2df078c97653da2",
     "packages": [
         {
             "name": "composer/pcre",
@@ -231,16 +231,16 @@
         },
         {
             "name": "johnbillion/wp-compat",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnbillion/wp-compat.git",
-                "reference": "f278d54131af7716033d8c3297b5f4343d83df25"
+                "reference": "c86aa3c71b560817689723f41bd551f5c10e2a22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnbillion/wp-compat/zipball/f278d54131af7716033d8c3297b5f4343d83df25",
-                "reference": "f278d54131af7716033d8c3297b5f4343d83df25",
+                "url": "https://api.github.com/repos/johnbillion/wp-compat/zipball/c86aa3c71b560817689723f41bd551f5c10e2a22",
+                "reference": "c86aa3c71b560817689723f41bd551f5c10e2a22",
                 "shasum": ""
             },
             "require": {
@@ -262,16 +262,17 @@
             },
             "suggest": {
                 "phpstan/phpstan-deprecation-rules": "PHPStan rules for detecting usage of deprecated symbols",
+                "swissspidy/phpstan-no-private": "PHPStan rules for detecting usage of pseudo-private functions, classes, and methods",
                 "szepeviktor/phpstan-wordpress": "WordPress extensions for PHPStan"
             },
             "type": "phpstan-extension",
             "extra": {
-                "wordpress-install-dir": "vendor/wordpress/wordpress",
                 "phpstan": {
                     "includes": [
                         "extension.neon"
                     ]
-                }
+                },
+                "wordpress-install-dir": "vendor/wordpress/wordpress"
             },
             "autoload": {
                 "psr-4": {
@@ -303,7 +304,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-25T14:44:28+00:00"
+            "time": "2024-11-30T19:24:46+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -1913,16 +1914,16 @@
         },
         {
             "name": "szepeviktor/phpstan-wordpress",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/szepeviktor/phpstan-wordpress.git",
-                "reference": "fab61ad0e3ba963877eea48d29248eb1ae2a3eda"
+                "reference": "f7beb13cd22998e3d913fdb897a1e2553ccd637e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/szepeviktor/phpstan-wordpress/zipball/fab61ad0e3ba963877eea48d29248eb1ae2a3eda",
-                "reference": "fab61ad0e3ba963877eea48d29248eb1ae2a3eda",
+                "url": "https://api.github.com/repos/szepeviktor/phpstan-wordpress/zipball/f7beb13cd22998e3d913fdb897a1e2553ccd637e",
+                "reference": "f7beb13cd22998e3d913fdb897a1e2553ccd637e",
                 "shasum": ""
             },
             "require": {
@@ -1969,9 +1970,9 @@
             ],
             "support": {
                 "issues": "https://github.com/szepeviktor/phpstan-wordpress/issues",
-                "source": "https://github.com/szepeviktor/phpstan-wordpress/tree/v2.0.0"
+                "source": "https://github.com/szepeviktor/phpstan-wordpress/tree/v2.0.1"
             },
-            "time": "2024-11-17T13:12:31+00:00"
+            "time": "2024-12-01T02:13:05+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -2533,6 +2534,54 @@
                 }
             ],
             "time": "2023-11-20T07:44:33+00:00"
+        },
+        {
+            "name": "johnpbloch/wordpress-core",
+            "version": "6.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/johnpbloch/wordpress-core.git",
+                "reference": "1975a1deaef23914b391f37314cc0e6a23ae16d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/1975a1deaef23914b391f37314cc0e6a23ae16d7",
+                "reference": "1975a1deaef23914b391f37314cc0e6a23ae16d7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.2.24"
+            },
+            "provide": {
+                "wordpress/core-implementation": "6.7.1"
+            },
+            "type": "wordpress-core",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WordPress Community",
+                    "homepage": "https://wordpress.org/about/"
+                }
+            ],
+            "description": "WordPress is open source software you can use to create a beautiful website, blog, or app.",
+            "homepage": "https://wordpress.org/",
+            "keywords": [
+                "blog",
+                "cms",
+                "wordpress"
+            ],
+            "support": {
+                "forum": "https://wordpress.org/support/",
+                "irc": "irc://irc.freenode.net/wordpress",
+                "issues": "https://core.trac.wordpress.org/",
+                "source": "https://core.trac.wordpress.org/browser",
+                "wiki": "https://codex.wordpress.org/"
+            },
+            "time": "2024-11-21T14:47:02+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
