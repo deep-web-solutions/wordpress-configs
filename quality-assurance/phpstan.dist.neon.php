@@ -3,7 +3,7 @@
 $config = array();
 $workingDirectory = getcwd();
 
-foreach ( array( 'dependencies', 'vendor/johnpbloch/wordpress-core' ) as $discoverDirectory ) {
+foreach ( array( 'dependencies' ) as $discoverDirectory ) {
 	if ( is_dir( $workingDirectory . '/' . $discoverDirectory ) ) {
 		$config['parameters']['scanDirectories'][] = $workingDirectory . '/' . $discoverDirectory;
 	}
