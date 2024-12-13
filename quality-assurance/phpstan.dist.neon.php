@@ -3,7 +3,7 @@
 $config = array();
 $workingDirectory = getcwd();
 
-foreach ( array( 'dependencies' ) as $discoverDirectory ) {
+foreach ( array( 'dependencies', 'vendor/deep-web-solutions' ) as $discoverDirectory ) {
 	if ( is_dir( $workingDirectory . '/' . $discoverDirectory ) ) {
 		$config['parameters']['scanDirectories'][] = $workingDirectory . '/' . $discoverDirectory;
 	}
