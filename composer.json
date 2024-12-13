@@ -20,7 +20,7 @@
     "wp-coding-standards/wpcs": "^3",
     "phpcompatibility/phpcompatibility-wp": "*",
 
-    "phpmd/phpmd": "^2",
+    "phpmd/phpmd": "^3",
 
     "phpstan/phpstan": "^2",
     "phpstan/extension-installer": "^1",
@@ -34,6 +34,7 @@
     "composer/composer": "^2",
     "johnpbloch/wordpress-core": "*"
   },
+  "minimum-stability": "dev",
 
   "autoload": {
     "classmap": [
